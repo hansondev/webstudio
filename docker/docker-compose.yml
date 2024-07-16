@@ -2,23 +2,26 @@ version: '3.8'
 
 services:
   webstudio:
-    build: 
-      context: ..
-      dockerfile: docker/Dockerfile
+    #build: 
+      #context: ..
+      #dockerfile: docker/Dockerfile
+    image: rogerznts/docker-webstudio:dev
     ports:
       - "3000:5173"
-    #command: ["sh", "-c", "pnpm migrations migrate --dev"]
+      #- "3001:3000"
     command: ["sh", "-c", "pnpm run dev"]
+    #command: ["sh", "-c", "pnpm migrations migrate --dev"]
+    #command: ["sh", "-c", "pnpm run build && sleep infinity"]
     #command: ["/wait-for-it.sh", "db", "5432", "pnpm migrations migrate --dev && pnpm run dev"]
     #command: sleep infinity
     environment:
       - NODE_ENV=development
-      - AUTH_SECRET=fb8cb814a7eca
+      - AUTH_SECRET=fb8cb81
       - DATABASE_URL=postgresql://postgres:pass@db/webstudio?pgbouncer=true
       - DIRECT_URL=postgresql://postgres:pass@db/webstudio
       - GH_CLIENT_SECRET=
       - GH_CLIENT_ID=
-      - DEV_LOGIN=true
+      - DEV_LOGIN=false
       - MAX_ASSETS_PER_PROJECT=200
       - FILE_UPLOAD_PATH=public/uploads
       - ASSET_BASE_URL=/uploads/

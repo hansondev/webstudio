@@ -7,21 +7,21 @@ services:
       dockerfile: docker/Dockerfile
     ports:
       - "3000:5173"
-    command: ["sh", "-c", "pnpm run dev"]
     #command: ["sh", "-c", "pnpm migrations migrate --dev"]
+    command: ["sh", "-c", "pnpm run dev"]
     #command: ["/wait-for-it.sh", "db", "5432", "pnpm migrations migrate --dev && pnpm run dev"]
     #command: sleep infinity
     environment:
       - NODE_ENV=development
-      - AUTH_SECRET=fb8cb814a7eca7ee143d1f
+      - AUTH_SECRET=fb8cb814a7eca
       - DATABASE_URL=postgresql://postgres:pass@db/webstudio?pgbouncer=true
       - DIRECT_URL=postgresql://postgres:pass@db/webstudio
       - GH_CLIENT_SECRET=
       - GH_CLIENT_ID=
       - DEV_LOGIN=true
       - MAX_ASSETS_PER_PROJECT=200
-      - FILE_UPLOAD_PATH="public/s/uploads"
-      - ASSET_BASE_URL=/s/uploads/
+      - FILE_UPLOAD_PATH=public/uploads
+      - ASSET_BASE_URL=/uploads/
       - FEATURES=*
       - BUILD_ORIGIN=https://www.test
       - USER_PLAN=pro
@@ -35,6 +35,8 @@ services:
       # S3_SECRET_ACCESS_KEY=
       # if using r2 this your worker url
       # ASSET_CDN_URL=https://assets.webstudio.is
+    volumes:
+      - public_storage:/app/apps/builder/public/
     depends_on:
       db:
         condition: service_healthy
@@ -62,6 +64,7 @@ services:
 
 volumes:
   postgres_data:
+  public_storage:
 
 
 networks:
